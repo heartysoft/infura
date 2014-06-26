@@ -1,5 +1,5 @@
 ﻿using System;
-using Framework.Tests.EventStore;
+using Infura.Tests.EventStore;
 using Infura.EventSourcing;
 using Machine.Specifications;
 

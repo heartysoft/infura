@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Infura;
+using Infura.Tests.EventStore;
 using Machine.Specifications;
 
-namespace Framework.Tests.EventStore
+namespace Infura.Tests.EventStore
 {
     public class reject_events_for_concurrency_violation_helper
     {

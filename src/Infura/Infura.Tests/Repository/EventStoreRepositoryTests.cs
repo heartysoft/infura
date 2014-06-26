@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Infura.EventSourcing;
-using Infura.Tests.Repository;
 using Machine.Specifications;
 
 namespace Infura.Tests.Repository

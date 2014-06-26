@@ -1,4 +1,4 @@
-namespace Framework.Tests.EventStore
+namespace Infura.Tests.EventStore
 {
     public class SomeEvent
     {

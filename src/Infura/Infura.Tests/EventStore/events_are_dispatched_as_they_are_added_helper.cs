@@ -1,4 +1,4 @@
-﻿using Framework.Tests.EventStore;
+﻿using Infura.Tests.EventStore;
 using Machine.Specifications;
 
 namespace Infura.Tests.EventStore
