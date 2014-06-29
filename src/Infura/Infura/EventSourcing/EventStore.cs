@@ -11,7 +11,6 @@ namespace Infura.EventSourcing
             long expectedInitialVersion);
         
         IEnumerable<object> LoadEvents(object id, long version = 0);
-        StoredEvent[] GetEventsSince(DateTime timestamp, int maxCount = 1000);
         void AdjustDispatcher(Action<StoredEvent> dispatcher);
     }
 }

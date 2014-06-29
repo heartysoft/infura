@@ -18,7 +18,7 @@ namespace Infura.Tests.Repository
 
         Establish context = () =>
         {
-            var eventStore = new InMemoryTestEventStore();
+            var eventStore = new InMemoryEventStore();
             var repository = new EventStoreRepository(eventStore);
                
             helper = new aggregate_loading_helper(repository);
@@ -29,36 +29,5 @@ namespace Infura.Tests.Repository
 
         It should_not_find_unsaved_aggreagate = () =>
             helper.VerifyNotFindingUnsavedAggreagte();
-    }
-
-    public class InMemoryTestEventStore : Infura.EventSourcing.EventStore
-    {
-        readonly Dictionary<object, List<object>> store = new Dictionary<object, List<object>>();
-
-        public void StoreEvents(object id, IEnumerable<object> events, long expectedInitialVersion)
-        {
-            if (store.ContainsKey(id))
-                store[id].AddRange(events);
-            else
-                store[id] = new List<object>(events);
-        }
-
-        public IEnumerable<object> LoadEvents(object id, long version = 0)
-        {
-            if (store.ContainsKey(id))
-                return store[id];
-
-            return new object[0];
-        }
-
-        public StoredEvent[] GetEventsSince(DateTime timestamp, int maxCount = 1000)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AdjustDispatcher(Action<StoredEvent> dispatcher)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

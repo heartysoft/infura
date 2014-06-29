@@ -7,6 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infura", "Infura\Infura.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infura.Tests", "Infura.Tests\Infura.Tests.csproj", "{5C32BAAB-E2C0-4F30-B160-618B8E598300}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{43129CC9-2899-49E2-A629-8015F59BE29C}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infura.ResClient", "Infura.ResClient\Infura.ResClient.csproj", "{EA208620-E189-4154-8B8F-FC00790C4754}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +30,10 @@ Global
 		{5C32BAAB-E2C0-4F30-B160-618B8E598300}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C32BAAB-E2C0-4F30-B160-618B8E598300}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C32BAAB-E2C0-4F30-B160-618B8E598300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA208620-E189-4154-8B8F-FC00790C4754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA208620-E189-4154-8B8F-FC00790C4754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA208620-E189-4154-8B8F-FC00790C4754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA208620-E189-4154-8B8F-FC00790C4754}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

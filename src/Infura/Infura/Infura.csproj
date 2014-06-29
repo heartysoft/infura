@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Aggregate.cs" />
     <Compile Include="Bus.cs" />
+    <Compile Include="EventSourcing\InMemoryEventStore.cs" />
     <Compile Include="Internal\AggregateCreator.cs" />
     <Compile Include="AggregateNotFoundException.cs" />
     <Compile Include="Internal\AggregateUpdater.cs" />

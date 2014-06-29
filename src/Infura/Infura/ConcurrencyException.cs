@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Infura
 {
@@ -13,22 +14,22 @@ namespace Infura
         }
 
 
-        public ConcurrencyException(string id, long currentVersion, long attemptedVersion, Exception inner)
+        public ConcurrencyException(string id, long? currentVersion, long attemptedVersion, Exception inner)
             : this(getMessage(id, currentVersion, attemptedVersion), inner)
         {
         }
 
-        public ConcurrencyException(string streamId, long currentVersion, long attemptedVersion)
+        public ConcurrencyException(string streamId, long? currentVersion, long attemptedVersion)
             : this(getMessage(streamId, currentVersion, attemptedVersion))
         {
         }
 
-        private static string getMessage(string streamId, long currentVersion, long attemptedVersion)
+        private static string getMessage(string streamId, long? currentVersion, long attemptedVersion)
         {
             return string.Format(
-                "The version of stream {0} in the Event Store is {1} and the attempted version was {2}.",
+                "The version of stream {0} in the Event Store is {1}, and the attempted version was {2}.",
                 streamId,
-                currentVersion,
+                currentVersion.HasValue? currentVersion.Value.ToString(CultureInfo.InvariantCulture) : "unavailable",
                 attemptedVersion);
         }
     }
