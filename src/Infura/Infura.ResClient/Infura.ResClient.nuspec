@@ -9,7 +9,7 @@
     <licenseUrl>https://github.com/heartysoft/infura/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/heartysoft/infura</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>Infura with Res.Client event store</description>
     <copyright>Copyright 2014 Heartysoft Solutions Limited</copyright>
     <tags>infura res event-sourcing</tags>
   </metadata>
