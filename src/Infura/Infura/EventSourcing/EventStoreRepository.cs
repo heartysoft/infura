@@ -28,7 +28,7 @@ namespace Infura.EventSourcing
             var currentVersion = instance.Version;
             var initialVersion = currentVersion - newEvents.Length;
 
-            _eventStore.StoreEvents(instance.Id, newEvents, initialVersion);
+            _eventStore.StoreEvents(instance.Id, newEvents, initialVersion + 1);
             instance.ClearUncommittedChanges();
         }
     }
