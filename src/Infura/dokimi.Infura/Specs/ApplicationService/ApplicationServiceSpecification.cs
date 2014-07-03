@@ -78,16 +78,16 @@ namespace dokimi.core.Specs.ApplicationService
                 if(store != null)
                     store.Dispose();
             }
-            catch
+            catch(Exception ex)
             {
                 if(!givenDescribed)
                     _given.DescribeTo(spec, formatter);
 
                 if(!whenDescribed)
                     _when.DescribeTo(spec.ReportWhenStep, formatter);
-
-                _expectations.DescribeTo(spec, formatter);
-                throw;
+                
+                events.Add(ex);
+                //_expectations.DescribeTo(spec, formatter);
             }
             finally
             {
@@ -96,6 +96,7 @@ namespace dokimi.core.Specs.ApplicationService
 
             //then
             _expectations.Verify(events.ToArray(), spec, formatter);
+            spec.When.Pass();
 
             return spec;
         }

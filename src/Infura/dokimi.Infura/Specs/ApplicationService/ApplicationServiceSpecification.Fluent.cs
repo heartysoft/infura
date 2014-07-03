@@ -27,12 +27,12 @@ namespace dokimi.core.Specs.ApplicationService
                 return new ExpectingEvents(id, this);
             }
 
-            public ExpectingThen When(string description, object message)
+            public ExpectingThenOrException When(string description, object message)
             {
                 return new ExpectingWhen(_instance).When(description, message);
             }
 
-            public ExpectingThen When(object message)
+            public ExpectingThenOrException When(object message)
             {
                 return new ExpectingWhen(_instance).When(message);
             }
@@ -76,12 +76,12 @@ namespace dokimi.core.Specs.ApplicationService
                         _given = given;
                     }
 
-                    public ExpectingThen When(string description, object message)
+                    public ExpectingThenOrException When(string description, object message)
                     {
                         return _given.When(description, message);
                     }
 
-                    public ExpectingThen When(object message)
+                    public ExpectingThenOrException When(object message)
                     {
                         return _given.When(message);
                     }
@@ -161,50 +161,74 @@ namespace dokimi.core.Specs.ApplicationService
                 _instance = instance;
             }
 
-            public ExpectingThen When(string description, object message)
+            public ExpectingThenOrException When(string description, object message)
             {
                 _instance._when = new EventEntry(description, message);
-                return new ExpectingThen(_instance);
+                return new ExpectingThenOrException(_instance);
             }
 
-            public ExpectingThen When(object message)
+            public ExpectingThenOrException When(object message)
             {
                 _instance._when = new EventEntry(null, message);
-                return new ExpectingThen(_instance);
+                return new ExpectingThenOrException(_instance);
             }
         }
 
-        public class ExpectingThen
+        public class ExpectingThenOrException
         {
             private readonly ApplicationServiceSpecification _instance;
 
-            public ExpectingThen(ApplicationServiceSpecification instance)
+            public ExpectingThenOrException(ApplicationServiceSpecification instance)
             {
                 _instance = instance;
             }
 
-            public ExpectingAnotherThenOrWireup Then(string description, object @event)
+            public ExpectingAnotherThenOrExceptionOrWireup Then(string description, object @event)
             {
                 _instance._expectations.AddExpectation(new EqualityExpectation(@event, description));
-                return new ExpectingAnotherThenOrWireup(_instance);
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
             }
 
-            public ExpectingAnotherThenOrWireup Then(object @event)
+            public ExpectingAnotherThenOrExceptionOrWireup Then(object @event)
             {
                 _instance._expectations.AddExpectation(new EqualityExpectation(@event));
-                return new ExpectingAnotherThenOrWireup(_instance);
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
             }
 
-            public ExpectingAnotherThenOrWireup Then<T>(string description, Expression<Func<T, bool>> expectation)
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>() where T : Exception
+            {
+                _instance._expectations.AddExpectation(new ExceptionExpectation<T>());
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>(string description) where T : Exception
+            {
+                _instance._expectations.AddExpectation(new ExceptionExpectation<T>(description));
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>(Expression<Func<T, bool>> predicate) where T : Exception
+            {
+                _instance._expectations.AddExpectation(new ExceptionExpectation<T>(predicate));
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>(string description, Expression<Func<T, bool>> predicate) where T : Exception
+            {
+                _instance._expectations.AddExpectation(new ExceptionExpectation<T>(predicate, description));
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup Then<T>(string description, Expression<Func<T, bool>> expectation)
             {
                 _instance._expectations.AddExpectation(new Expectation<T>(expectation, description));
-                return new ExpectingAnotherThenOrWireup(_instance);
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
             }
 
-            public ExpectingAnotherThenOrWireup Then<T>(Expression<Func<T, bool>> expectation)
+            public ExpectingAnotherThenOrExceptionOrWireup Then<T>(Expression<Func<T, bool>> expectation)
             {
                 _instance._expectations.AddExpectation(new Expectation<T>(expectation));
-                return new ExpectingAnotherThenOrWireup(_instance);
+                return new ExpectingAnotherThenOrExceptionOrWireup(_instance);
             }
 
             public ExpectingWireup NothingShouldHappen()
@@ -214,37 +238,59 @@ namespace dokimi.core.Specs.ApplicationService
             }
         }
 
-        public class ExpectingAnotherThenOrWireup
+        public class ExpectingAnotherThenOrExceptionOrWireup
         {
             private readonly ApplicationServiceSpecification _instance;
 
-            public ExpectingAnotherThenOrWireup(ApplicationServiceSpecification instance)
+            public ExpectingAnotherThenOrExceptionOrWireup(ApplicationServiceSpecification instance)
             {
                 _instance = instance;
             }
 
-            public ExpectingAnotherThenOrWireup And(string description, object @event)
+            public ExpectingAnotherThenOrExceptionOrWireup And(string description, object @event)
             {
                 _instance._expectations.AddExpectation(new EqualityExpectation(@event, description));
                 return this;
             }
 
-            public ExpectingAnotherThenOrWireup And(object @event)
+            public ExpectingAnotherThenOrExceptionOrWireup And(object @event)
             {
                 _instance._expectations.AddExpectation(new EqualityExpectation(@event));
                 return this;
             }
 
-            public ExpectingAnotherThenOrWireup And<T>(string description, Expression<Func<T, bool>> expectation)
+            public ExpectingAnotherThenOrExceptionOrWireup And<T>(string description, Expression<Func<T, bool>> expectation)
             {
                 _instance._expectations.AddExpectation(new Expectation<T>(expectation, description));
                 return this;
             }
 
-            public ExpectingAnotherThenOrWireup And<T>(Expression<Func<T, bool>> expectation)
+            public ExpectingAnotherThenOrExceptionOrWireup And<T>(Expression<Func<T, bool>> expectation)
             {
                 _instance._expectations.AddExpectation(new Expectation<T>(expectation));
                 return this;
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>(string description, Expression<Func<T, bool>> predicate) where T : Exception
+            {
+                _instance._expectations.AddExpectation(new ExceptionExpectation<T>(predicate, description));
+                return this;
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>(Expression<Func<T, bool>> predicate) where T : Exception
+            {
+                return ExpectException(null, predicate);
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>(string description) where T : Exception
+            {
+                _instance._expectations.AddExpectation(new ExceptionExpectation<T>(description));
+                return this;
+            }
+
+            public ExpectingAnotherThenOrExceptionOrWireup ExpectException<T>() where T : Exception
+            {
+                return ExpectException<T>((string)null);
             }
 
             public ApplicationServiceSpecification Wireup(Func<Repository, EventStore, Router> setup)
@@ -252,7 +298,7 @@ namespace dokimi.core.Specs.ApplicationService
                 return new ExpectingWireup(_instance).WireUp(setup);
             }
 
-            public ExpectingAnotherThenOrWireup AndTotalNumberOfEventsIs(int count)
+            public ExpectingAnotherThenOrExceptionOrWireup AndTotalNumberOfEventsIs(int count)
             {
                 _instance._expectations.AddExpectation(new MessageCount(count));
                 return this;

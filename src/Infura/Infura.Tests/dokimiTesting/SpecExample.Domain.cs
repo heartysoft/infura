@@ -93,6 +93,9 @@ namespace Infura.Tests.dokimiTesting
 
         public void Debit(decimal amount)
         {
+            if(_balance < amount)
+                throw new NotEnoughFundsException();
+
             Apply(new AccountDebited((Guid)Id, amount, _balance, _balance- amount));
         }
 
@@ -128,5 +131,14 @@ namespace Infura.Tests.dokimiTesting
             account.Debit(cmd.Amount);
             _repo.Save(account);
         }
+    }
+
+    public class NotEnoughFundsException : Exception
+    {
+        
+    }
+
+    public class FooBarException : Exception
+    {
     }
 }

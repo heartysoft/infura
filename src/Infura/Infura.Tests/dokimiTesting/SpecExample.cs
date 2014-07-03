@@ -93,27 +93,27 @@ namespace Infura.Tests.dokimiTesting
         }
     }
 
-    //public class overdraft_attempt_should_fail
-    //{
-    //    public Specification when_debiting()
-    //    {
-    //        var accountId = Guid.NewGuid();
+    public class overdraft_attempt_should_fail : ExampleSpecification
+    {
+        public Specification when_debiting()
+        {
+            var accountId = Guid.NewGuid();
 
-    //        return
-    //            Specifications.Catalog
-    //            .ApplicationServiceSpecification<ExampleCategory>()
-    //            .ForStream(accountId)
-    //            .Event("Account X registered with £100", new AccountRegistered(accountId, 100M))
-    //            .Event("Account X debited £10", new AccountDebited(accountId, 100M, 100M, 0M))
-    //            .When("Debit attempt on X for £10", new DebitAccount(accountId, 10M))
-    //            .ExpectException()
-    //            .Wireup(repo =>
-    //            {
-    //                var handler = new AccountApplicationService(repo);
+            return
+                Specifications.Catalog
+                .ApplicationServiceSpecification<ExampleCategory>()
+                .ForStream(accountId)
+                .Event("Account X registered with £100", new AccountRegistered(accountId, 100M))
+                .Event("Account X debited £10", new AccountDebited(accountId, 100M, 100M, 0M))
+                .When("Debit attempt on X for £10", new DebitAccount(accountId, 10M))
+                .ExpectException<NotEnoughFundsException>()
+                .Wireup((repo, es) =>
+                {
+                    var handler = new AccountApplicationService(repo);
 
-    //                return Router.Create()
-    //                    .Route<DebitAccount>(handler.Handle);
-    //            });
-    //    }
-    //}
+                    return Router.Create()
+                        .Route<DebitAccount>(handler.Handle);
+                });
+        }
+    }
 }
