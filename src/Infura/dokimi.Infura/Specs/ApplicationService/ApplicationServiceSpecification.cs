@@ -12,9 +12,9 @@ namespace dokimi.core.Specs.ApplicationService
         private EventEntry _when;
         private readonly Expectations _expectations = new Expectations();
         private Func<Repository, EventStore, Router> _wireup;
-        private Func<EventStore> _eventStoreFactory = () => new InMemoryEventStore();
+        private Func<CancellationToken, EventStore> _eventStoreFactory = _ => new InMemoryEventStore();
 
-        public ApplicationServiceSpecification UseEventStoreFacotry(Func<EventStore> es)
+        public ApplicationServiceSpecification UseEventStoreFacotry(Func<CancellationToken, EventStore> es)
         {
             _eventStoreFactory = es;
             return this;
@@ -48,8 +48,6 @@ namespace dokimi.core.Specs.ApplicationService
             var prepareStep = new StepInfo("Setup completed");
             spec.ReportGivenStep(prepareStep);
 
-            //_when.DescribeTo(spec.ReportWhenStep, formatter);
-
             var token = new CancellationTokenSource();
 
             var events = new List<object>();
@@ -58,24 +56,11 @@ namespace dokimi.core.Specs.ApplicationService
             try
             {
                 //wireup
-                var eventStore = _eventStoreFactory();
+                var eventStore = _eventStoreFactory(token.Token);
                 eventStore.AdjustDispatcher(x => events.Add(x.EventData));
                 var repo = new EventStoreRepository(eventStore);
                 var router = _wireup(repo, eventStore);
-
-                //if (_given.Count == 0)
-                //{
-                //    var step = new StepInfo("No history");
-                //    spec.ReportGivenStep(step);
-                //    step.Pass();
-                //}
-                //else for (int i = 0; i < _given.Count; i++)
-                //{
-                //    var g = _given[i];
-                //    g.RunTo(router);
-                //    givenSteps[i].Pass();
-                //}
-
+                
                 _given.StoreTo(eventStore, spec.ReportGivenStep, formatter);
                 givenDescribed = true;
 
