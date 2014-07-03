@@ -47,18 +47,18 @@ namespace Infura.EventSourcing
         {
             var existing = _store.ContainsKey(id);
 
-            if(existing == false && expectedInitialVersion != 1)
+            if(existing == false && expectedInitialVersion != 1 && expectedInitialVersion != -1)
                 throw new ConcurrencyException(id.ToString(), null, expectedInitialVersion);
 
             var existingMaxVersion = existing? _store[id].Max(x => x.Sequence) : 0;
 
-            if(expectedInitialVersion != existingMaxVersion+1)
+            if(expectedInitialVersion != existingMaxVersion+1 && expectedInitialVersion != -1)
                 throw new ConcurrencyException(id.ToString(), existingMaxVersion, expectedInitialVersion);
-
-            int offset = 0;
+            
+            int offset = 1;
             return events.Select(x =>
             {
-                var version = expectedInitialVersion + offset;
+                var version = existingMaxVersion + offset;
                 offset++;
                 return new StoredEvent(Guid.NewGuid(), id, version, _clock(), x);
             }).ToArray();
