@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using dokimi.core;
 using dokimi.core.dokimi.core.Specs.ApplicationService;
 using dokimi.core.Specs.ApplicationService;
 using dokimi.nunit;
-using Infura.EventSourcing;
 
 namespace Infura.Tests.dokimiTesting
 {
-    public class ExampleSpecification : NUnitSpecificationTest
+    public abstract class ExampleSpecification : NUnitSpecificationTest
     {
     }
 

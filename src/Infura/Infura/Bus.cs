@@ -1,50 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infura
 {
     public class Bus
     {
-        readonly Dictionary<Type, List<Action<object>>> _handlers 
-            = new Dictionary<Type, List<Action<object>>>();
-        
-        public void Register<T>(Action<T> handler)
+        readonly Dictionary<Type, List<Func<object, Task>>> _handlers = new Dictionary<Type, List<Func<object, Task>>>();
+
+        public Bus Register<T>(Func<T, Task> handler)
         {
-            Action<object> adjustedHandler = getAdjustedHandler(handler);
+            Func<object, Task> adjustedHandler = getAdjustedHandler(handler);
 
             var listForType = getListForMessageType<T>();
             listForType.Add(adjustedHandler);
+            return this;
         }
 
-        public void ExecuteCommand(object command)
+        public async Task ExecuteCommand(object command)
         {
             var commandType = command.GetType();
-            _handlers[commandType].Single()(command);
+            await _handlers[commandType].Single()(command);
         }
 
-        public void Publish(object @event)
+        public async Task Publish(object @event)
         {
             var eventType = @event.GetType();
-            var assignableEventTypes = 
+            var assignableEventTypes =
                 _handlers.Keys.Where(x => x.IsAssignableFrom(eventType));
-            
-            foreach(var assignableEventType in assignableEventTypes)
+
+            List<Task> tasks = new List<Task>();
+
+            foreach (var assignableEventType in assignableEventTypes)
                 foreach (var handler in _handlers[assignableEventType])
-                    handler(@event);
+                    tasks.Add(handler(@event));
+
+            await Task.WhenAll(tasks);
         }
 
-        private Action<object> getAdjustedHandler<T>(Action<T> handler)
+        private Func<object, Task> getAdjustedHandler<T>(Func<T, Task> handler)
         {
-            return x => handler((T) x);
+            return x => handler((T)x);
         }
 
-        private List<Action<object>> getListForMessageType<T>()
+        private List<Func<object, Task>> getListForMessageType<T>()
         {
-            var type = typeof (T);
+            var type = typeof(T);
 
-            if(_handlers.ContainsKey(type) == false)
-                _handlers[type] = new List<Action<object>>();
+            if (_handlers.ContainsKey(type) == false)
+                _handlers[type] = new List<Func<object, Task>>();
 
             return _handlers[type];
         }

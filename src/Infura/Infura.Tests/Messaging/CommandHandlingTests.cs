@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using System.Threading.Tasks;
+using Machine.Specifications;
 
 namespace Infura.Tests.Messaging
 {
@@ -15,9 +16,9 @@ namespace Infura.Tests.Messaging
     {
         public bool Handled;
 
-        public void Handle(SomeCommand command)
+        public Task Handle(SomeCommand command)
         {
-            Handled = true;
+            return Task.Run(()=>Handled = true);
         }
     }
 

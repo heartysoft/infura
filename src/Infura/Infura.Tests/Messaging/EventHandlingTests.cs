@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using System.Threading.Tasks;
+using Machine.Specifications;
 
 namespace Infura.Tests.Messaging
 {
@@ -28,19 +29,19 @@ namespace Infura.Tests.Messaging
         public bool HandledSomeOtherEvent { get; private set; }
         public bool HandledSomeInterfaceEvent { get; private set; }
         
-        public void Handle(SomeEvent e)
+        public Task Handle(SomeEvent e)
         {
-            HandledSomeEvent = true;
+            return Task.Run(()=>HandledSomeEvent = true);
         }
 
-        public void Handle(SomeOtherEvent e)
+        public Task Handle(SomeOtherEvent e)
         {
-            HandledSomeOtherEvent = true;
+            return Task.Run(()=>HandledSomeOtherEvent = true);
         }
 
-        public void Handle(SomeInterface e)
+        public Task Handle(SomeInterface e)
         {
-            HandledSomeInterfaceEvent = true;
+            return Task.Run(() => HandledSomeInterfaceEvent = true);
         }
     }
 
