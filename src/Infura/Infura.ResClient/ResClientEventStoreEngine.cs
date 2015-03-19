@@ -20,7 +20,7 @@ namespace Infura.ResClient
         {
             var jsonSerialiserSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             Func<object, string> serialiser = x => JsonConvert.SerializeObject(x, jsonSerialiserSettings);
-            var publisher = _resPublishEngine.CreatePublisher(context, publishDefaultTimeout, typeResolver, serialiser);
+            var publisher = _resPublishEngine.CreateEventPublisher(context, publishDefaultTimeout, typeResolver, serialiser);
             var queryClient = _resQueryEngine.CreateClient(queryDefaultTimeout);
             Func<string, string, object> deserialiser =
                 (tag, str) => JsonConvert.DeserializeObject(str, typeResolver.GetTypeFor(tag), jsonSerialiserSettings);

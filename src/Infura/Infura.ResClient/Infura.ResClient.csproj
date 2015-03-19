@@ -45,13 +45,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Res.Client, Version=0.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Res.Client.0.0.4.0\lib\net45\Res.Client.dll</HintPath>
+    <Reference Include="Res.Client">
+      <HintPath>..\packages\Res.Client.0.0.7.0\lib\net45\Res.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Res.Protocol, Version=0.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Res.Client.0.0.4.0\lib\net45\Res.Protocol.dll</HintPath>
+    <Reference Include="Res.Protocol">
+      <HintPath>..\packages\Res.Client.0.0.7.0\lib\net45\Res.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
