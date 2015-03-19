@@ -101,7 +101,7 @@ namespace Infura.Tests.dokimiTesting
                 .Event("Account X registered with £100", new AccountRegistered(accountId, 100M))
                 .Event("Account X debited £10", new AccountDebited(accountId, 100M, 100M, 0M))
                 .When("Debit attempt on X for £10", new DebitAccount(accountId, 10M))
-                .ExpectException<NotEnoughFundsException>()
+                .ExpectException<AggregateException>(x => x.InnerException is NotEnoughFundsException)
                 .Wireup((repo, es) =>
                 {
                     var handler = new AccountApplicationService(repo);

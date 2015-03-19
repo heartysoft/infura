@@ -1,8 +1,10 @@
-﻿namespace Infura
+﻿using System.Threading.Tasks;
+
+namespace Infura
 {
     public interface Repository
     {
-        T GetById<T>(object id) where T : Aggregate;
-        void Save(Aggregate instance);
+        Task<T> GetById<T>(object id) where T : Aggregate;
+        Task Save(Aggregate instance);
     }
 }

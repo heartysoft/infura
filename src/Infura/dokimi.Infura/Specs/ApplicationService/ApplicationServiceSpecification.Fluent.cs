@@ -138,7 +138,7 @@ namespace dokimi.core.Specs.ApplicationService
                 {
                     var stepInfo = new StepInfo(_enforcedDescription ?? formatter.FormatMessage(_event));
                     reportGivenStep(stepInfo);
-                    eventStore.StoreEvents(_id, new[] { _event }, -1);
+                    eventStore.StoreEvents(_id, new[] { _event }, -1).Wait();
                     stepInfo.Pass();
                 }
             }

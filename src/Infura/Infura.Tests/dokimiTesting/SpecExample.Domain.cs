@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using dokimi.core;
 using dokimi.core.dokimi.core.Specs.ApplicationService;
 using dokimi.core.Specs.ApplicationService;
@@ -119,17 +120,17 @@ namespace Infura.Tests.dokimiTesting
             _repo = repo;
         }
 
-        public void Handle(RegisterAccount cmd)
+        public Task Handle(RegisterAccount cmd)
         {
             var account = new Account(cmd.AccountId, cmd.IntitialBalance);
-            _repo.Save(account);
+            return _repo.Save(account);
         }
 
-        public void Handle(DebitAccount cmd)
+        public async Task Handle(DebitAccount cmd)
         {
-            var account = _repo.GetById<Account>(cmd.AccountId);
+            var account = await _repo.GetById<Account>(cmd.AccountId);
             account.Debit(cmd.Amount);
-            _repo.Save(account);
+            await _repo.Save(account);
         }
     }
 

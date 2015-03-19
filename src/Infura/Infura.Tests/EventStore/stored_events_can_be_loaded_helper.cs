@@ -33,7 +33,7 @@ namespace Infura.Tests.EventStore
             };
 
             eventStore.StoreEvents(24, eventsToStore, 2);
-            storedEvents = eventStore.LoadEvents(24).ToArray();
+            storedEvents = eventStore.LoadEvents(24).Result.ToArray();
         }
 
         public void execute()

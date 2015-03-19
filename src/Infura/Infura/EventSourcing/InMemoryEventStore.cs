@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infura.EventSourcing
 {
@@ -10,27 +11,30 @@ namespace Infura.EventSourcing
         private Func<DateTime> _clock = () => DateTime.UtcNow;
         private Action<StoredEvent> _dispatcher = x => { };
 
-        public void StoreEvents(object id, IEnumerable<object> events, long expectedInitialVersion)
+        public Task StoreEvents(object id, IEnumerable<object> events, long expectedInitialVersion)
         {
-            var storedEvents = getStoredEvents(id, events, expectedInitialVersion);
+	        return Task.Run(() =>
+	        {
+		        var storedEvents = getStoredEvents(id, events, expectedInitialVersion);
 
-            if (_store.ContainsKey(id))
-                _store[id].AddRange(storedEvents);
-            else
-                _store[id] = new List<StoredEvent>(storedEvents);
+		        if (_store.ContainsKey(id))
+			        _store[id].AddRange(storedEvents);
+		        else
+			        _store[id] = new List<StoredEvent>(storedEvents);
 
-            foreach (var @event in storedEvents)
-            {
-                _dispatcher(@event);
-            }
+		        foreach (var @event in storedEvents)
+		        {
+			        _dispatcher(@event);
+		        }
+	        });
         }
 
-        public IEnumerable<object> LoadEvents(object id, long version = 0)
+        public Task<IEnumerable<object>> LoadEvents(object id, long version = 0)
         {
             if (_store.ContainsKey(id))
-                return _store[id].Select(x => x.EventData).ToArray();
+                return Task.FromResult(_store[id].Select(x => x.EventData));
 
-            return new object[0];
+			return Task.FromResult(Enumerable.Empty<object>());
         }
         
         public void AdjustDispatcher(Action<StoredEvent> dispatcher)

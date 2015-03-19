@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace dokimi.core.Specs.ApplicationService
 {
@@ -15,13 +16,21 @@ namespace dokimi.core.Specs.ApplicationService
             return new Router();
         }
 
-        public Router Route<T>(Action<T> handler)
+        public Router SyncRoute<T>(Action<T> handler)
         {
             var list = getList(typeof(T));
             list.Add(x => handler((T)x));
             
             return this;
         }
+
+	    public Router Route<T>(Func<T, Task> handler)
+	    {
+			var list = getList(typeof(T));
+			list.Add(x => handler((T)x).Wait());
+
+		    return this;
+	    }
 
         public void Handle(object message)
         {

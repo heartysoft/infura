@@ -25,7 +25,7 @@ namespace Infura.ResClient
             _deserialiser = deserialiser;
         }
 
-        public void StoreEvents(object id,
+        public async Task StoreEvents(object id,
            IEnumerable<object> events,
            long expectedInitialVersion)
         {
@@ -48,9 +48,8 @@ namespace Infura.ResClient
 
             try
             {
-                _publisher
-                    .Publish(id.ToString(), eventsToStore, expectedInitialVersion)
-                    .GetAwaiter().GetResult();
+                await _publisher
+                    .Publish(id.ToString(), eventsToStore, expectedInitialVersion);
             }
             catch (Res.Client.Exceptions.ConcurrencyException ex)
             {
@@ -69,10 +68,9 @@ namespace Infura.ResClient
                 _dispatcher(e);
         }
 
-        public IEnumerable<object> LoadEvents(object id, long version = 0)
+        public async Task<IEnumerable<object>> LoadEvents(object id, long version = 0)
         {
-            var events = _queryClient.LoadEvents(_context, id.ToString(), version, null, null)
-                .GetAwaiter().GetResult();
+            var events = await _queryClient.LoadEvents(_context, id.ToString(), version, null, null);
             return events.Events.Select(x => _deserialiser(x.TypeTag, x.Body));
         }
         

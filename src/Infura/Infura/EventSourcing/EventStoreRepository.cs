@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infura.EventSourcing
 {
@@ -11,9 +12,9 @@ namespace Infura.EventSourcing
             _eventStore = eventStore;
         }
 
-        public T GetById<T>(object id) where T : Aggregate
+        public async Task<T> GetById<T>(object id) where T : Aggregate
         {
-            var events = _eventStore.LoadEvents(id).ToArray();
+            var events = (await _eventStore.LoadEvents(id)).ToArray();
 
             if (events.Length == 0)
                 throw new AggregateNotFoundException();
@@ -22,13 +23,13 @@ namespace Infura.EventSourcing
             return instance;
         }
 
-        public void Save(Aggregate instance) 
+        public async Task Save(Aggregate instance) 
         {
             var newEvents = instance.GetUncommittedEvents();
             var currentVersion = instance.Version;
             var initialVersion = currentVersion - newEvents.Length;
 
-            _eventStore.StoreEvents(instance.Id, newEvents, initialVersion + 1);
+            await _eventStore.StoreEvents(instance.Id, newEvents, initialVersion + 1);
             instance.ClearUncommittedChanges();
         }
     }

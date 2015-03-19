@@ -15,13 +15,13 @@ namespace Infura.Tests.Repository
             var p = new Person(id, "John");
             p.UpdateName("Jake");
 
-            repo.Save(p);
+            repo.Save(p).Wait();
 
-            person = repo.GetById<Person>(id);
+            person = repo.GetById<Person>(id).Result;
 
             try
             {
-                repo.GetById<Person>(20);
+                repo.GetById<Person>(20).Wait();
             }
             catch(Exception e)
             {
@@ -37,7 +37,7 @@ namespace Infura.Tests.Repository
 
         public void VerifyNotFindingUnsavedAggreagte()
         {
-            exception.ShouldBeOfExactType<AggregateNotFoundException>();
+			exception.InnerException.ShouldBeOfExactType<AggregateNotFoundException>();
         }
     }
 }

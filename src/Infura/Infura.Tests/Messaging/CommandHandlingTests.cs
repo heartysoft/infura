@@ -35,7 +35,7 @@ namespace Infura.Tests.Messaging
             _bus.Register<SomeCommand>(_handler.Handle);
         };
 
-        Because of = () => _bus.ExecuteCommand(new SomeCommand());
+        Because of = () => _bus.ExecuteCommand(new SomeCommand()).Wait();
 
         It should_dispath_command_to_registered_handler
             = () => _handler.Handled.ShouldBeTrue();
