@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/heartysoft/infura</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Infura with Res.Client event store</description>
-    <copyright>Copyright 2014 Heartysoft Solutions Limited</copyright>
+    <copyright>Copyright 2015 Heartysoft Solutions Limited</copyright>
     <tags>infura res event-sourcing</tags>
   </metadata>
 </package>

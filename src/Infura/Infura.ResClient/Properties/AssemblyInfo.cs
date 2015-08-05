@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Heartysoft Solutions Limited")]
 [assembly: AssemblyProduct("Infura.ResClient")]
-[assembly: AssemblyCopyright("Copyright ©  2014 Heartysoft Solutions Limited")]
+[assembly: AssemblyCopyright("Copyright ©  2015 Heartysoft Solutions Limited")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -63,6 +63,8 @@ task compile -depends version {
 	}
 }
 
+task nuget -depends nuget-infura-resclient
+
 task nuget-infura-resclient -depends build-infura-resclient, publish-infura-resclient
 
 task build-infura-resclient -depends compile {
